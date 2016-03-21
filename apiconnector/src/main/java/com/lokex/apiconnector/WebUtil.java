@@ -76,7 +76,7 @@ public class WebUtil {
                 params = params + "&";
             }
         }
-
-        return "?"+params;
+        return params;// for url encoded data no query string '?'
+//        return "?"+params;
     }
 }

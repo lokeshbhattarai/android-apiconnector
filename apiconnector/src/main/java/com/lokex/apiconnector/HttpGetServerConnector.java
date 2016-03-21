@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * Created by lokex on 12/23/14.
  */
-public class HttpGetServerConnector {
+final public class HttpGetServerConnector {
 
     private final String TAG = HttpGetServerConnector.class.getName();
     private String serverResponse;

@@ -10,11 +10,12 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 /**
  * Created by lokex on 12/23/14.
  */
-public class HttpPostServerConnector {
+final public class HttpPostServerConnector {
 
     private final String TAG = HttpPostServerConnector.class.getSimpleName();
 
@@ -39,10 +40,12 @@ public class HttpPostServerConnector {
         URL url  = new URL(serverConnectorDto.getUrlToConnect());
 
         String postData = "";
+        boolean isJsonData = false;
 
         if(serverConnectorDto.getDataJsonString()!=null){
 
             postData = serverConnectorDto.getDataJsonString();
+            isJsonData = true;
         }else{
             postData = WebUtil.getParams(serverConnectorDto.getDataListNameValuePair());
         }
@@ -52,11 +55,11 @@ public class HttpPostServerConnector {
         byte[] postDataBytes = postData.toString().getBytes("UTF-8");
 
         HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-        conn.setDoOutput( true );
-        conn.setInstanceFollowRedirects( false );
-        conn.setRequestMethod( "POST" );
-        conn.setRequestProperty( "Content-Type", "application/json");
-        conn.setRequestProperty( "Accept", "application/json");
+        conn.setDoOutput(true);
+        conn.setInstanceFollowRedirects(false);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty( "Content-Type", isJsonData?"application/json":"application/x-www-form-urlencoded;charset="+"UTF-8");
+        conn.setRequestProperty( "Accept", "application/json");//assuming the response is json data
         conn.setRequestProperty("charset", "utf-8");
         conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
         conn.setUseCaches(false);
@@ -70,7 +73,7 @@ public class HttpPostServerConnector {
             int responseCode = conn.getResponseCode();
             AppLogger.showLog(TAG,"response code::"+responseCode);
 
-            if(responseCode==200){
+            if(responseCode>0){//ignoring negative response code if so ever. You can check against any other response codes.
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(conn.getInputStream()));
                 String inputLine;
@@ -86,7 +89,7 @@ public class HttpPostServerConnector {
                 return response.toString();
 
             }else{
-                AppLogger.showLog(TAG,"Ignoring the connection since response code is not 200");
+                AppLogger.showLog(TAG,"Ignoring the connection since response code is not valid");
                 return "";
             }
 

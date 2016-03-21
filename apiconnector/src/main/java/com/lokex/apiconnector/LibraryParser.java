@@ -38,6 +38,7 @@ public class LibraryParser extends ParserFamily{
         AppLogger.showLog(TAG,"serverResponse to handle::"+response);
 
         //todo callback should be invoked after successful parsing
+        //for now just calling one of the possible methods
         if(mCallback!=null){
             mCallback.onAPiResponseObtained(taskId, response);
         }

@@ -8,12 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import com.lokex.apiconnector.AppLogger;
 import com.lokex.apiconnector.FailureReason;
 import com.lokex.apiconnector.HttpTaskListener;
 import com.lokex.apiconnector.ParserFactory;
 import com.lokex.apiconnector.ParserFamily;
 import com.lokex.apiconnector.ServerConnectorDTO;
 import com.lokex.apiconnector.ServerTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,14 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
 
@@ -95,9 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.button_initiate_post:
 
+                //todo use data to be url encoded as hashmap as below
                 Map<String,String> dataParams = new HashMap<>();
-                dataParams.put("key1","value1");
-                dataParams.put("key2","value2");
+                dataParams.put("key1", "value");
+                dataParams.put("key2", "value");
+
 
                 ServerConnectorDTO serverConnector = new ServerConnectorDTO();
                 serverConnector.setUrlToConnect("");//todo add url
